@@ -44,7 +44,6 @@ public:
                 break;
             }
         }
-
         if(!modified){
             cout << "Edge between " << genre1 << " and " << genre2 << " not found." << endl;
         }
