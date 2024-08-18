@@ -2,6 +2,7 @@
 #include <utility>
 #include <unordered_map>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -21,4 +22,14 @@ public:
         return adjacencyList.at(genre)
     }
 
+    void printGraph() const {
+        for (const auto& node : adjacencyList) {
+            const string& genre = node.first;
+            const auto& neighbors = node.second;
+            cout << "Genre: " << genre << "\n";
+            for (const auto& neighbor : neighbors){
+                cout << "Connected to: " << neighbor.first << "with weight" << neigbor.second;
+            } 
+        }
+    }
 }
