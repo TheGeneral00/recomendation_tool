@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include "movie.h"
 
 using namespace std;
 
@@ -14,6 +15,8 @@ class Graph {
 private: 
     //Adjacency list: maps each genre to a vector of pairs (connected genre and weigth)
     unordered_map<string, vector<pair< string, double>>> adjacencyList;
+
+    unordered_map<string,vector<movie>> genreMovies;
 
 public:
     //Add an edge to the between  to genres with a givenweigth
@@ -70,6 +73,19 @@ public:
             for (const auto& neighbor : neighbors){
                 cout << "Connected to: " << neighbor.first << " with weight " << neighbor.second;
             } 
+        }
+    }
+
+    void addMovieToGenre(const movie& movie, const string& genre){
+        genreMovies[genre].push_back(movie);
+    }
+
+    vector<movie> getMoviesByGenre(const string& genre) const {
+        auto it = genreMovies.find(genre);
+        if (it != genreMovies.end()){
+            return it->second;
+        } else {
+            return {};
         }
     }
 };
