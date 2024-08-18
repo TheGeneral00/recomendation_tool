@@ -13,9 +13,9 @@ public:
     unordered_map<string, vector<pair< string, double>>> adjacencyList;
 
     //Add an edge to the between  to genres with a givenweigth
-    void addEdge(const string genre1, const string genre2, const double weigth){
-        adjacencyList[genre1].emplace_back(genre2, weigth)
-        adjacencyList[genre2].emplace_back(genre1, weigth)
+    void addEdge(const string genre1, const string genre2, const double weight){
+        adjacencyList[genre1].emplace_back(genre2, weight)
+        adjacencyList[genre2].emplace_back(genre1, weight)
     }
 
     const vector<pair<string, double>> &  getNeighbors(const string& genre) const {
@@ -23,7 +23,7 @@ public:
     }
 
     //Modify weigths of the edges
-    void modifyEdges(const string& genre1, const string& genre2, double newWeigth) {
+    void modifyEdges(const string& genre1, const string& genre2, double newWeight) {
         bool modified = false
 
         for(auto& neighbor: adjacencyList[genre1]){
@@ -36,7 +36,7 @@ public:
         for (auto& neighbor: adjacencyList[genre2]){
             if (neighbor.second == genre1){
                 neighbor.second = newWeight;
-                modified = true;
+                modified = true
                 break;
             }
         }
@@ -46,6 +46,28 @@ public:
         }
     }
 
+    //return the edges of a given genre
+    void getEdges(const string& genre1) const {
+        auto it = adjacencyList.find(genre)
+        if(it != adjacencyList.end()){
+            return it->second;
+        } else {
+        return {}
+        }
+    }
+
+    void getWeight(const string& genre1, const string& genre2) const {
+        auto it = adjacencyList.find(genre1);
+        if (it != adjacencyList.end()){
+            const auto& neighbors = it->second;
+            for (const auto& neighbor: neighbors){
+                if (neighbor == genre2){
+                    return neighbor.second;
+                }
+            }
+        }
+
+    }
     void printGraph() const {
         for (const auto& node : adjacencyList) {
             const string& genre = node.first;
