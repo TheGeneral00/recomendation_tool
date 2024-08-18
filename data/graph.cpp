@@ -22,6 +22,30 @@ public:
         return adjacencyList.at(genre)
     }
 
+    //Modify weigths of the edges
+    void modifyEdges(const string& genre1, const string& genre2, double newWeigth) {
+        bool modified = false
+
+        for(auto& neighbor: adjacencyList[genre1]){
+            if (neighbor.first == genre2){
+                neighbor.second = newWeight;
+                modified = true;
+                break;
+            }
+        }
+        for (auto& neighbor: adjacencyList[genre2]){
+            if (neighbor.second == genre1){
+                neighbor.second = newWeight;
+                modified = true;
+                break;
+            }
+        }
+
+        if(!modified){
+            cout << "Edge between " << genre1 << " and " << genre2 << " not found." << endl;
+        }
+    }
+
     void printGraph() const {
         for (const auto& node : adjacencyList) {
             const string& genre = node.first;
