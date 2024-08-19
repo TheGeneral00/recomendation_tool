@@ -16,7 +16,7 @@ private:
     //Adjacency list: maps each genre to a vector of pairs (connected genre and weigth)
     unordered_map<string, vector<pair< string, double>>> adjacencyList;
 
-    unordered_map<string,vector<movie>> genreMovies;
+    unordered_map<string,vector<movie>> genreMedia;
 
 public:
     //Add an edge to the between  to genres with a givenweigth
@@ -76,13 +76,13 @@ public:
         }
     }
 
-    void addMovieToGenre(const movie& movie, const string& genre){
-        genreMovies[genre].push_back(movie);
+    void addMediaToGenre(Movie* media, const string& genre){
+        genreMedia[genre].push_back(media);
     }
 
-    vector<movie> getMoviesByGenre(const string& genre) const {
-        auto it = genreMovies.find(genre);
-        if (it != genreMovies.end()){
+    vector<Movie*> getMediaByGenre(const string& genre) const {
+        auto it = genreMedia.find(genre);
+        if (it != genreMedia.end()){
             return it->second;
         } else {
             return {};
