@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include "movie.h"
+#include "show.h"
 
 using namespace std;
 
