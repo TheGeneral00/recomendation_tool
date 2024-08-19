@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class movie
+class Movie
 {
 private:
     string title;
@@ -15,11 +15,11 @@ private:
 
 pubic:
     //Constructor
-    Film(const string& title, const vector<string>& genres)
+    Movie(const string& title, const vector<string>& genres)
     : title(title), genres(genres) {}
 
     string getTitle() const {return title;}
 
     vector<string> getGenres() const {return genres; }
-
+}
 #endif
