@@ -1,8 +1,26 @@
-<Root>:
-    orientation: 'vertical'
-    Button: 
-        text: 'Add new movie/show'
+<AutoSizeButton@Button>:
+    text_size: self.size
+    valign: 'middle'
+    halign: 'center'
 
-    Button: 
-        text: 'Give recommendation'
-        
+<Root>:
+    # Options button at the top right
+    AutoSizeButton:
+        text: 'Options'
+        pos_hint: {'right': 1, 'top': 1}
+        size_hint: 0.1, 0.05
+
+    # BoxLayout at the bottom with horizontal orientation
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        size_hint_x: 1
+        pos_hint: {'center_x': 0.5, 'y': 0}
+
+        AutoSizeButton:
+            text: 'Give recommendation'
+            size_hint: 0.5, 1
+
+        AutoSizeButton:
+            text: 'Add movie/show'
+            size_hint: 0.5, 1
