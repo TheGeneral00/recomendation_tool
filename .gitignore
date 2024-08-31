@@ -1,1 +1,5 @@
+#tests for data structure and data work
 test.cpp
+
+#virtual environment directory
+GUI/venv/
