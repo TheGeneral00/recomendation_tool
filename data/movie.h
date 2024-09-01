@@ -4,22 +4,36 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include "media.h"
 
 using namespace std;
 
-class Movie
-{
+class Movie : public Media{
 private:
-    string title;
     vector<string> genres;
+    double length; //length in hours
 
 public:
     //Constructor
-    Movie(const string& title, const vector<string>& genres)
-    : title(title), genres(genres) {}
+    Movie(const string& title, const vector<string>& genres, const double& length)
+    : Media(title), genres(genres), length(length) {}
 
-    string getTitle() const {return title;}
+    vector<string> getGenres() const override { return genres; }
 
-    vector<string> getGenres() const {return genres; }
+    double getLength() const { return length; }
+
+    void setLength(double newLength) { length = newLength; }
+
+    void printDetails() const override {
+	    cout << "Movie: " << title << endl;
+	    cout << "Genres: ";
+	    for (const auto& genre : genres) {
+		    cout << genre << " ";
+	    }
+	    cout << endl;
+	    if (length > 0) {
+		    cout << "Length: " << length << " hours" << endl;
+	    }
+    }
 };
 #endif

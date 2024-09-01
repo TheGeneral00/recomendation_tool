@@ -1,11 +1,13 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <memory>
 #include <vector>
 #include <utility>
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include "media.h"
 #include "movie.h"
 #include "show.h"
 
@@ -17,10 +19,10 @@ private:
     //Adjacency list: maps each genre to a vector of pairs (connected genre and weigth)
     unordered_map<string, vector<pair< string, double>>> adjacencyList;
 
-    unordered_map<string,vector<Movie>> genreMedia;
+    unordered_map<string,vector<shared_ptr<Media>>> genreMedia;
 
 public:
-    //Add an edge to the between  to genres with a givenweigth
+    //Add an edge between to genres with a given weigth
     void addEdge(const string genre1, const string genre2, const double weight){
         adjacencyList[genre1].emplace_back(genre2, weight);
         adjacencyList[genre2].emplace_back(genre1, weight);
@@ -77,11 +79,13 @@ public:
         }
     }
 
-    void addMediaToGenre(Movie* media, const string& genre){
-        genreMedia[genre].push_back(media);
+    void addMediaToGenre(const shared_ptr<Media>& media){
+	    for (const string& genre : media->getGenres()) {
+		    genreMedia[genre].push_back(media);
+	    }
     }
 
-    vector<Movie*> getMediaByGenre(const string& genre) const {
+    vector<shared_ptr<Media>> getMediaByGenre(const string& genre) const {
         auto it = genreMedia.find(genre);
         if (it != genreMedia.end()){
             return it->second;

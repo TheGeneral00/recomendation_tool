@@ -11,16 +11,21 @@ using namespace std;
 class Show: public Movie {
 
     private:
-        double length; //length in hours
         int numberOfEpisodes;
 
     public:
         //Constructor
         Show(const string& title, const vector<string>& genres, double length, int numberOfEpisodes)
-            :Movie(title, genres), length(length), numberOfEpisodes(numberOfEpisodes) {}    	
-
-        double getLength() const {return length;}
+            : Movie(title, genres, length), numberOfEpisodes(numberOfEpisodes) {}    	
 
         int getNumberOfEpisodes() const {return numberOfEpisodes;}
+
+	void setNumberOfEpisodes(int newNumberOfEpisodes) { numberOfEpisodes = newNumberOfEpisodes; }
+
+	void printDetails() const override {
+		Movie::printDetails();//call base class printDetails
+		cout << "Number of Episodes: " << numberOfEpisodes << endl;
+	}
 };
-#endif
+
+#endif //SHOW_H 
