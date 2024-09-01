@@ -4,23 +4,48 @@
     halign: 'center'
 
 <Root>:
-    # Options button at the top right
-    AutoSizeButton:
-        text: 'Options'
-        pos_hint: {'right': 1, 'top': 1}
-        size_hint: 0.1, 0.05
+    FloatLayout:
 
-    # BoxLayout at the bottom with horizontal orientation
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint_y: None
-        size_hint_x: 1
-        pos_hint: {'center_x': 0.5, 'y': 0}
-
+        # Options button at the top right
         AutoSizeButton:
-            text: 'Give recommendation'
-            size_hint: 0.5, 1
+            text: 'Options'
+            pos_hint: {'right': 1, 'top': 1}
+            size_hint: 0.1, 0.05
+            on_press: print("Options pressed!")  # This should now work
 
-        AutoSizeButton:
-            text: 'Add movie/show'
-            size_hint: 0.5, 1
+        # BoxLayout at the bottom with horizontal orientation
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, None
+            height: '50dp'  # Fixed height, corrected typo
+            pos_hint: {'center_x': 0.5, 'y': 0}
+
+            AutoSizeButton:
+                text: 'Give recommendation'
+                size_hint_x: 0.25
+                on_press: root.give_recommendation()
+
+            AutoSizeButton:
+                text: 'Add movie/show'
+                size_hint_x: 0.25
+                on_press: root.add_entry_popup()
+
+        # Entry List (ScrollView with a GridLayout)
+        ScrollView:
+            size_hint: 1, 0.5
+            pos_hint: {'x': 0, 'y': 0.25}
+            GridLayout:
+                id: entries_layout
+                cols: 1
+                spacing: 10
+                size_hint_y: None
+                height: self.minimum_height
+
+        # Top 5 Genres (BoxLayout)
+        BoxLayout:
+            id: genres_box
+            orientation: 'vertical'
+            size_hint: 1, 0.2
+            pos_hint: {'x': 0, 'y': 0.75}
+            padding: 10
+            spacing: 10
