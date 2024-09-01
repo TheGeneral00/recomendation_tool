@@ -13,7 +13,7 @@ private:
     string title;
     vector<string> genres;
 
-pubic:
+public:
     //Constructor
     Movie(const string& title, const vector<string>& genres)
     : title(title), genres(genres) {}
@@ -21,5 +21,5 @@ pubic:
     string getTitle() const {return title;}
 
     vector<string> getGenres() const {return genres; }
-}
+};
 #endif
