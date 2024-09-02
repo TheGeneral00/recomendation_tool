@@ -18,7 +18,7 @@ class Show: public Movie {
         Show(const string& title, const vector<string>& genres, double length, int numberOfEpisodes)
             : Movie(title, genres, length), numberOfEpisodes(numberOfEpisodes) {}    	
 
-        int getNumberOfEpisodes() const {return numberOfEpisodes;}
+    int getNumberOfEpisodes() const {return numberOfEpisodes;}
 
 	void setNumberOfEpisodes(int newNumberOfEpisodes) { numberOfEpisodes = newNumberOfEpisodes; }
 
