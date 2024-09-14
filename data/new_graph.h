@@ -37,17 +37,17 @@ public:
     } 
     
     void addEdge(const string& genre1, const string& genre2, double weight) {
-        addNode(from);
-        addNode(to);
+        addNode(genre1);
+        addNode(genre2);
         nodes.at(genre1).edges.push_back(make_pair(genre2, weight));
         nodes.at(genre2).edges.push_back(make_pair(genre1, weight));
     }
 
     void addMedia(const string& genre, const shared_ptr<Media>& media) {
-        if(nodes.find(nodeName) != nodes.end()) {
+        if(nodes.find(genre) != nodes.end()) {
             nodes.at(genre).mediaVector.push_back(media);
         } else {
-            cerr << "Node " << nodeName << " does not exist." << endl;
+            cerr << "Node " << genre << " does not exist." << endl;
         }
     }
 
@@ -122,7 +122,7 @@ public:
 
     double getWeight(const string& genre1, const string& genre2) {
         if (nodes.find(genre1) != nodes.end()) {
-            auto& edges = nodes.at(genre).edges;
+            auto& edges = nodes.at(genre1).edges;
             auto it = find_if(edges.begin(), edges.end(), [&genre2](const pair<string, double>& edge){
                 return edge.first == genre2; 
             });
@@ -136,9 +136,10 @@ public:
             cerr << "Node " << genre1 << " does not exist." << endl;
             return -1;
         }
+    }
 
-    void addMediaToGenre(const Media& media) {
-        for (const string& genre : media->getGenre()) {
+    void addMediaToGenre(const shared_ptr<Media>& media) {
+        for (const string& genre : media->getGenres()) {
             if (nodes.find(genre) != nodes.end()) {
             nodes.at(genre).mediaVector.push_back(media);
             } else {
@@ -155,7 +156,4 @@ public:
         }
     }
 };
-
-
-
 #endif //NEW_GRAPH_H
