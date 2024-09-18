@@ -1,2 +1,8 @@
 #virtual environment directory
 GUI/venv/
+
+# ignore build environment for now 
+data/build/
+data/CMakeLists.txt
+data/src/CMakeLists.txt
+data/test/CMakeLists.txt

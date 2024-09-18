@@ -1,7 +1,6 @@
 # Add an executable for the tests
-add_executable(tests
-    test_main.cpp
-    test_graph.cpp
+add_executable(tests 
+    graph_test.cpp
     # Add more test files as needed
 )
 
