@@ -155,5 +155,12 @@ public:
             cerr << "Node " << genre << " does not exist." << endl;
         }
     }
+
+    bool hasNode(const string& genre) {
+        if (nodes.find(genre) != nodes.end()){
+            return true;
+        }
+        return false;
+    }
 };
 #endif //NEW_GRAPH_H

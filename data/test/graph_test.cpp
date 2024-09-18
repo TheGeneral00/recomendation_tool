@@ -1,24 +1,25 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_test_macros.hpp>
-
 #include "new_graph.h"
 #include <vector>
+#include <string>
 
-Test_Case("Graph is being tested", "[graph]") {
+TEST_CASE("Graph is being tested", "[graph]") {
     
     Graph graph;
 
-    REQUIRE(typeof(graph) == Graph);
+    std::vector<std::string> genres = {"action", "comedy", "romance"};
 
-    vector<string> genres = {"action", "comedy", "romance"}
-    
-    for (string genre : genres){
-        graph.addNode(genre)
-    }
-    for (string genre : genres){
-        REQUIRE(graph.nodes.find(genre) != nodes.end())
+    SECTION("adding nodes") {
+        // Add nodes to the graph
+        for (const std::string& genre : genres) {
+            graph.addNode(genre);  // Assuming addNode is a method in the Graph class
+        }
+
+        // Check if the nodes were added correctly
+        for (const std::string& genre : genres) {
+            REQUIRE(graph.hasNode(genre));  // Assuming hasNode is a method that checks for node existence
+        }
     }
 }
-
-
 
