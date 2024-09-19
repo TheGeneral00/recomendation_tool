@@ -11,7 +11,7 @@ using namespace std;
 class Movie : public Media{
 private:
     vector<string> genres;
-    double length; //length in hours
+    double length; //length in min
 
 public:
     //Constructor

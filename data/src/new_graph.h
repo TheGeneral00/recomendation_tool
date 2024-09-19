@@ -36,7 +36,7 @@ public:
         }
     } 
     
-    void addEdge(const string& genre1, const string& genre2, double weight) {
+    void addEdge(const string& genre1, const string& genre2, double weight = 0) {
         addNode(genre1);
         addNode(genre2);
         nodes.at(genre1).edges.push_back(make_pair(genre2, weight));
@@ -142,8 +142,32 @@ public:
         for (const string& genre : media->getGenres()) {
             if (nodes.find(genre) != nodes.end()) {
             nodes.at(genre).mediaVector.push_back(media);
+            cout << "Added media " << media->getTitle() << " to " << genre << "." << endl;
             } else {
-                cerr << "Node " << genre << " does not exist." << endl;    
+                addNode(genre);
+                nodes.at(genre).mediaVector.push_back(media);
+                cout << "Created new Node " << genre << "and added media" << media->getTitle() << " to node." << endl;    
+            }
+        }
+    }
+
+    void removeMediaFromGenre(const shared_ptr<Media>& mediaToRemove) {
+        // Loop through each genre that the media belongs to
+        for (const string& genre : mediaToRemove->getGenres()) {
+            // Check if the genre exists in the nodes map
+            if (nodes.find(genre) != nodes.end()) {
+                // Get a reference to the media vector for this genre
+                vector<shared_ptr<Media>>& mediaVector = nodes.at(genre).mediaVector;
+
+                // Iterate through the media vector to find the media to remove
+                for (auto it = mediaVector.begin(); it != mediaVector.end();) {
+                    // If the current media matches mediaToRemove, erase it from the vector
+                    if (*it == mediaToRemove) {
+                        it = mediaVector.erase(it);  // Erase and update the iterator
+                    } else {
+                        ++it;  // Only increment if no element was erased
+                    }
+                }
             }
         }
     }
@@ -159,6 +183,20 @@ public:
     bool hasNode(const string& genre) {
         if (nodes.find(genre) != nodes.end()){
             return true;
+        }
+        return false;
+    }
+
+    bool hasEdge(const string& genre1, const string& genre2, double& weight) {
+        if (hasNode(genre1) != true || hasNode(genre2) != true) {
+            cerr << "Node " << genre1 << " and/or " << genre2 << " dont exist." << endl;
+            return false;
+        }
+        auto& edges = nodes.at(genre1).edges;
+        for(auto& edge : edges) {
+            if (edge.first == genre2 && edge.second == weight) {
+                return true;
+            }
         }
         return false;
     }
