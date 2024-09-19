@@ -33,6 +33,7 @@ public:
     void addNode(const string& nodeName) {
         if(nodes.find(nodeName) == nodes.end()) {
             nodes[nodeName] = Node{nodeName, {}, {}};
+            cout << "Added Node " << nodeName << " to the graph." << endl;
         }
     } 
     
@@ -41,14 +42,7 @@ public:
         addNode(genre2);
         nodes.at(genre1).edges.push_back(make_pair(genre2, weight));
         nodes.at(genre2).edges.push_back(make_pair(genre1, weight));
-    }
-
-    void addMedia(const string& genre, const shared_ptr<Media>& media) {
-        if(nodes.find(genre) != nodes.end()) {
-            nodes.at(genre).mediaVector.push_back(media);
-        } else {
-            cerr << "Node " << genre << " does not exist." << endl;
-        }
+        cout << "Added edge between " << genre1 << " and " << genre2 << " with weight " << weight << "." << endl;
     }
 
     void displayGraph() const {
@@ -92,6 +86,7 @@ public:
             if(!edgesExistsGenre2) {
                 edgesGenre2.push_back(make_pair(genre1, newWeight));
             }
+            cout << "Modified edge between " << genre1 << " and " << genre2 << " to weight " << newWeight << " ." << endl;
 
         } else {
             cerr << "One or both of the nodes do not exist." << endl;
@@ -118,6 +113,7 @@ public:
                 cerr << "Edge from " << genre2 << " to " << genre1 << " does not exist." << endl;
             }
         }
+        cout << "Removed Edge between " << genre1 << " and " << genre2 << "." << endl;
     }
 
     double getWeight(const string& genre1, const string& genre2) {
@@ -140,14 +136,14 @@ public:
 
     void addMediaToGenre(const shared_ptr<Media>& media) {
         for (const string& genre : media->getGenres()) {
-            if (nodes.find(genre) != nodes.end()) {
-            nodes.at(genre).mediaVector.push_back(media);
-            cout << "Added media " << media->getTitle() << " to " << genre << "." << endl;
-            } else {
+            // If the genre node doesn't exist, create it
+            if (nodes.find(genre) == nodes.end()) {
                 addNode(genre);
-                nodes.at(genre).mediaVector.push_back(media);
-                cout << "Created new Node " << genre << "and added media" << media->getTitle() << " to node." << endl;    
+                cout << "Created new Node " << genre << "." << endl;
             }
+        // Add the media to the genre's mediaVector
+        nodes.at(genre).mediaVector.push_back(media);
+        cout << "Added media " << media->getTitle() << " to " << genre << "." << endl;
         }
     }
 
@@ -164,6 +160,7 @@ public:
                     // If the current media matches mediaToRemove, erase it from the vector
                     if (*it == mediaToRemove) {
                         it = mediaVector.erase(it);  // Erase and update the iterator
+                        cout << "Removed media " << mediaToRemove->getTitle() << " from " << genre << "." << endl;
                     } else {
                         ++it;  // Only increment if no element was erased
                     }
@@ -187,7 +184,7 @@ public:
         return false;
     }
 
-    bool hasEdge(const string& genre1, const string& genre2, double& weight) {
+    bool hasEdge(const string& genre1, const string& genre2, const double& weight) {
         if (hasNode(genre1) != true || hasNode(genre2) != true) {
             cerr << "Node " << genre1 << " and/or " << genre2 << " dont exist." << endl;
             return false;

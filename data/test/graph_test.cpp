@@ -1,3 +1,4 @@
+#include <memory>
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_test_macros.hpp>
 #include "new_graph.h"
@@ -24,23 +25,38 @@ TEST_CASE("Graph is being tested", "[graph]") {
         }
     }
     SECTION("adding and modifying edges"){
-        graph.addEdge("action", "comdey", 0.3);
+        graph.addEdge("action", "comedy", 0.3);
         graph.addEdge("action", "romance", 0.5);
         graph.addEdge("comedy", "romance");
         REQUIRE(graph.hasEdge("action", "romance", 0.5) == true);
         REQUIRE(graph.hasEdge("action", "comedy", 0.3) == true);
         REQUIRE(graph.hasEdge("comedy", "romance", 0) == true);
-        REQUIRE(graph.getWeight("action", "romance") == 0.5)
+        REQUIRE(graph.getWeight("action", "romance") == 0.5);
         graph.modifyEdge("action", "romance", 0.45);
         REQUIRE(graph.hasEdge("action", "romance", 0.45));
     }
     SECTION("removing Edges"){
         graph.removeEdge("action", "comedy");
-        REQUIRE(graph.hasEdge("action", "comedy") == false);
+        REQUIRE(graph.hasNode("action") == true);
+        REQUIRE(graph.hasNode("comedy") == true);
+        REQUIRE(graph.hasEdge("action", "comedy", 0) == false);
     }
     SECTION("adding and removing Media to a Node"){
         Movie movieObj("The Jungle Book", {"children", "adventure"}, 105);
         Show showObj("The Office", {"sitcom", "comedy", "mockumentary"}, 4468, 188);
+
+        graph.addMediaToGenre(std::make_shared<Movie>(movieObj));
+        graph.addMediaToGenre(std::make_shared<Show>(showObj));
+
+        graph.displayGraph();
+
+        REQUIRE(graph.hasNode("children") == true);
+        REQUIRE(graph.hasNode("sitcom") == true);
+
+        graph.removeMediaFromGenre(std::make_shared<Movie>(movieObj));
+        graph.removeMediaFromGenre(std::make_shared<Show>(showObj));
+
+        graph.displayGraph();
     }
 }
 
