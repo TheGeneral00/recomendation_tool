@@ -19,75 +19,59 @@
 using namespace std;
 
 struct Node {
-	string name;
-	vector<pair<string, double>> edges;
+	unordered_map<string, double> edges;
 	vector<shared_ptr<Media>> mediaVector;
+
+    //Constructor
+    Node() : edges(), mediaVector() {}
 };
 
 class Graph {
 private:
     unordered_map<string, Node> nodes;
 
+    //helper function for modifyEdges
+    void modifyOrAddEdge(const string& from, const string& to, double newWeight) {
+    nodes.at(from).edges[to] = newWeight;
+    }
+
 public:
 
     void addNode(const string& nodeName) {
         if(nodes.find(nodeName) == nodes.end()) {
-            nodes[nodeName] = Node{nodeName, {}, {}};
-            cout << "Added Node " << nodeName << " to the graph." << endl;
+            nodes[nodeName] = Node();
+            cout << "Added Node " << nodeName << endl;
+        } else {
+            cerr << "Node already exists." << endl;
         }
+        displayGraph();
     } 
     
-    void addEdge(const string& genre1, const string& genre2, double weight = 0) {
-        addNode(genre1);
-        addNode(genre2);
-        nodes.at(genre1).edges.push_back(make_pair(genre2, weight));
-        nodes.at(genre2).edges.push_back(make_pair(genre1, weight));
-        cout << "Added edge between " << genre1 << " and " << genre2 << " with weight " << weight << "." << endl;
-    }
-
+    //function for debugging
+    
     void displayGraph() const {
-        for(const auto& pair : nodes) {
+        cout << "Graph contents: " << endl;
+        for (const auto& pair : nodes) {
+            const string& nodeName = pair.first;  // The key is the node name
             const Node& node = pair.second;
-            cout << "Node: " << node.name << endl;
+            
+            cout << "Node: " << nodeName << endl;
 
             cout << "Edges: " << endl;
-            for(const auto& edge : node.edges) {
-                cout << " -> " << edge.first << "(weight: " << edge.second << ")" << endl;
+            for (const auto& edge : node.edges) {
+                cout << " -> " << edge.first << " (weight: " << edge.second << ")" << endl;
             }
             cout << "Media count: " << node.mediaVector.size() << endl;
             cout << endl;
         }
     }
 
-    void modifyEdge(const string& genre1, const string& genre2, double newWeight) {
+    //can be used to add or modify an edge 
+    void modifyEdge(const string& genre1, const string& genre2, double weight = 0) {
         if(nodes.find(genre1) != nodes.end() && nodes.find(genre2) != nodes.end()) {
-            auto& edges = nodes.at(genre1).edges;
-            bool edgeExistsGenre1 = false;
-            for(auto& edge : edges) {
-                if (edge.first == genre2) {
-                    edge.second = newWeight;
-                    edgeExistsGenre1 = true;
-                    break;
-                }
-            }
-            if(!edgeExistsGenre1) {
-                edges.push_back(make_pair(genre2, newWeight));
-            }
-
-            auto& edgesGenre2 = nodes.at(genre2).edges;
-            bool edgesExistsGenre2 = false;
-            for (auto& edge : edgesGenre2) {
-                if (edge.first == genre1) {
-                    edge.second = newWeight;
-                    edgesExistsGenre2 = true;
-                    break;
-                }
-            }
-            if(!edgesExistsGenre2) {
-                edgesGenre2.push_back(make_pair(genre1, newWeight));
-            }
-            cout << "Modified edge between " << genre1 << " and " << genre2 << " to weight " << newWeight << " ." << endl;
-
+            modifyOrAddEdge(genre1, genre2, weight);
+            modifyOrAddEdge(genre2, genre1, weight);
+            cout << "Modified edge between " << genre1 << " and " << genre2 << "." << endl;
         } else {
             cerr << "One or both of the nodes do not exist." << endl;
         }
@@ -102,6 +86,8 @@ public:
             } else {
                 cerr << "Edge from " << genre1 << " to " << genre2 << " does not exist." << endl;
             }
+        } else {
+            cerr << "Node " << genre1 << " does not exist." << endl;
         }
 
         if(nodes.find(genre2) != nodes.end()) {
@@ -112,6 +98,8 @@ public:
             } else {
                 cerr << "Edge from " << genre2 << " to " << genre1 << " does not exist." << endl;
             }
+        } else {
+            cerr << "Node " << genre2 << " does not exist." << endl;
         }
         cout << "Removed Edge between " << genre1 << " and " << genre2 << "." << endl;
     }
@@ -153,7 +141,7 @@ public:
             // Check if the genre exists in the nodes map
             if (nodes.find(genre) != nodes.end()) {
                 // Get a reference to the media vector for this genre
-                vector<shared_ptr<Media>>& mediaVector = nodes.at(genre).mediaVector;
+                auto& mediaVector = nodes.at(genre).mediaVector;
 
                 // Iterate through the media vector to find the media to remove
                 for (auto it = mediaVector.begin(); it != mediaVector.end();) {
@@ -165,6 +153,8 @@ public:
                         ++it;  // Only increment if no element was erased
                     }
                 }
+            } else {
+                cerr << "Genre " << genre << " not found in nodes." << endl;
             }
         }
     }
@@ -174,27 +164,34 @@ public:
             return nodes.at(genre).mediaVector;
         } else {
             cerr << "Node " << genre << " does not exist." << endl;
+            return {};
         }
     }
 
+    //function for debugging
     bool hasNode(const string& genre) {
-        if (nodes.find(genre) != nodes.end()){
-            return true;
-        }
-        return false;
+       return nodes.find(genre) != nodes.end(); 
     }
 
+    //function for debugging
     bool hasEdge(const string& genre1, const string& genre2, const double& weight) {
-        if (hasNode(genre1) != true || hasNode(genre2) != true) {
-            cerr << "Node " << genre1 << " and/or " << genre2 << " dont exist." << endl;
+        if (hasNode(genre1) != true) {
+            cerr << "Node " << genre1 << " dosn't exist." << endl;
             return false;
         }
+
+        if (hasNode(genre2) != true) {
+            cerr << "Node " << genre2 << " dosn't exist." << endl;
+            return false;
+        }
+
         auto& edges = nodes.at(genre1).edges;
         for(auto& edge : edges) {
             if (edge.first == genre2 && edge.second == weight) {
                 return true;
             }
         }
+        cerr << "Weight of the edge is not correct." << endl;
         return false;
     }
 };
