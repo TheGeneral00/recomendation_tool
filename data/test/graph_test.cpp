@@ -1,7 +1,7 @@
 #include <memory>
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_test_macros.hpp>
-#include "new_graph.h"
+#include "graph.h"
 #include <vector>
 #include <string>
 #include "movie.h"

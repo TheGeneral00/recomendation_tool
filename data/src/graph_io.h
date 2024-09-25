@@ -16,9 +16,9 @@ void saveGraphToBinary(const Graph& graph, const string& filename) {
     }
 
     //write adjacency list
-    size_t adjSize = graph.adjacencyList.size();
+    size_t adjSize = graph.nodes.size();
     file.write(reinterpret_cast<const char*>(&adjSize), sizeof(adjSize));
-    for(const auto& entry : graph.adjacencyList) {
+    for(const auto& entry : graph.nodes) {
         size_t keySize = entry.first.size();
         file.write(reinterpret_cast<const char*>(&keySize), sizeof(keySize));
         file.write(entry.first.c_str(), keySize);
@@ -34,9 +34,9 @@ void saveGraphToBinary(const Graph& graph, const string& filename) {
     }
     
     //Write Media data
-    size_t mediaSize = graph.genreMedia.size();
+    size_t mediaSize = graph.mediaVector.size();
     file.write(reinterpret_cast<const char*>(&mediaSize), sizeof(mediaSize));
-    for (const auto& entry : graph.genreMedia) {
+    for (const auto& entry : graph.mediaVector) {
         size_t genreSize = entry.first.size();
         file.write(reinterpret_cast<const char*>(&genreSize), sizeof(genreSize));
         file.write(entry.first.c_str(), sizeof(genreSize));
@@ -70,6 +70,7 @@ void saveGraphToBinary(const Graph& graph, const string& filename) {
                     file.write(reinterpret_cast<const char*>(&titleSize), sizeof(titleSize));
                     file.write(show->getTitle().c_str(), titleSize);
                     size_t genreSize = show->getGenres().size();
+
                     file.write(reinterpret_cast<const char*>(&genreSize), sizeof(genreSize));
                     for (const auto& genre : show->getGenres()) {
                         size_t genreSize = genre.size();
@@ -114,7 +115,7 @@ void loadGraphFromBinary(Graph& graph, const string& filename) {
             file.read(reinterpret_cast<char*>(&weight), sizeof(weight));
             neighbors.emplace_back(neighborGenre, weight);
         }
-        graph.adjacencyList[genre] = neighbors;
+        graph.nodes.at[genre] = neighbors;
     }
 
     //Read Media data
@@ -128,12 +129,7 @@ void loadGraphFromBinary(Graph& graph, const string& filename) {
     
         size_t mediaListSize;
         file.read(reinterpret_cast<char*>(&mediaListSize), sizeof(mediaListSize));
-        for(size_t j = 0; j < mediaListSize; ++j) {" Tab settings
-set tabstop=4       " Number of spaces that a <Tab> in the file counts for
-set shiftwidth=4    " Number of spaces to use for each step of (auto)indent
-set expandtab       " Convert tabs to spaces
-set smarttab        " Makes tabbing smarter, will realize you have 4 vs 8
-set autoindent      " Copy indent from current line when starting a new line
+        for(size_t j = 0; j < mediaListSize; ++j) {
             char type;
             file.read(reinterpret_cast<char*>(&type), sizeof(type));
             size_t titleSize;

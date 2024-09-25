@@ -1,5 +1,5 @@
 #virtual environment directory
-GUI/GUIvenv/
+venv/
 
 # ignore build environment for now 
 data/build/
