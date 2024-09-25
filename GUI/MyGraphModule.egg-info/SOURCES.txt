@@ -1,0 +1,5 @@
+setup.py
+MyGraphModule.egg-info/PKG-INFO
+MyGraphModule.egg-info/SOURCES.txt
+MyGraphModule.egg-info/dependency_links.txt
+MyGraphModule.egg-info/top_level.txt

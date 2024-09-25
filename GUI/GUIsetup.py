@@ -9,6 +9,9 @@ from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.properties import DictProperty
 
+import graph_module.graph_module
+
+graph = graph_module.graph_module.graph
 
 class AutoSzieButton(Button):
     def on_size(self, args):

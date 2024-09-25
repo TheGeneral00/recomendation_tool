@@ -1,5 +1,5 @@
 #include <pybind11/pybind11.h>
-#include <graph.h>
+#include "../graph.h"
 
 namespace py = pybind11; 
 

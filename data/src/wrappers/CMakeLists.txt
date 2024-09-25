@@ -36,5 +36,3 @@ set_target_properties(graph_module PROPERTIES
     PREFIX "${PYTHON_MODULE_PREFIX}"
     SUFFIX "${PYTHON_MODULE_EXTENSION}"
 )
-
-
