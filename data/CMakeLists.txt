@@ -17,7 +17,7 @@ FetchContent_MakeAvailable(catch2)
 
 # Add subdirectories
 add_subdirectory(src)
-add_subdirectory(test)
+add_subdirectory(tests)
 
 # Enable testing
 enable_testing()
